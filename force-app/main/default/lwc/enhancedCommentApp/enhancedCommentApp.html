@@ -1,6 +1,6 @@
 <template>
   <div class="enhanced-comment-app">
-    <slot></slot>
-    <!-- Placeholder for Enhanced Comment App -->
+    <c-enhanced-comment-composer record-id={recordId} onsavecomment={handleSaveComment}></c-enhanced-comment-composer>
+    <c-enhanced-comment-timeline record-id={recordId} onrequestcomments={handleRequestComments}></c-enhanced-comment-timeline>
   </div>
 </template>
