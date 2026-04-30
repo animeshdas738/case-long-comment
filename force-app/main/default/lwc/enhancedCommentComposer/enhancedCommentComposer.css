@@ -1,0 +1,11 @@
+/* Composer styling */
+.card-body .rte {
+  min-height: 140px;
+}
+.meta .char-count {
+  color: #666;
+  font-size: 0.875rem;
+}
+.actions lightning-button {
+  margin-left: 0.5rem;
+}

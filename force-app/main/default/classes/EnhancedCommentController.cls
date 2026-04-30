@@ -37,4 +37,28 @@ public with sharing class EnhancedCommentController {
             throw new AuraHandledException('Unable to create comment: ' + e.getMessage());
         }
     }
+
+    @AuraEnabled
+    public static Id createCommentWithAttachments(String caseId, String parentCommentId, String bodyHtml, String bodyPlain, Boolean isPublic, Boolean isDraft, String channel, String type, List<Id> contentDocumentIds) {
+        Id ecId = createComment(caseId, parentCommentId, bodyHtml, bodyPlain, isPublic, isDraft, channel, type);
+        if (contentDocumentIds != null && !contentDocumentIds.isEmpty()) {
+            List<ContentDocumentLink> links = new List<ContentDocumentLink>();
+            for (Id docId : contentDocumentIds) {
+                links.add(new ContentDocumentLink(ContentDocumentId = docId, LinkedEntityId = ecId, ShareType = 'I', Visibility = 'AllUsers'));
+            }
+            try {
+                insert links;
+            } catch (Exception e) {
+                // non-blocking: log but do not fail the entire create
+                System.debug('Failed to link attachments: ' + e.getMessage());
+            }
+        }
+        return ecId;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Enhanced_Comment__c getCommentById(Id commentId) {
+        if (commentId == null) return null;
+        return EnhancedCommentSelector.selectById(commentId);
+    }
 }

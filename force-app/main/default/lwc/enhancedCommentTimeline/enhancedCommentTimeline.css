@@ -1,0 +1,12 @@
+.header .title {
+  font-weight: 600;
+}
+.controls lightning-input, .controls lightning-combobox {
+  margin-left: 0.5rem;
+}
+.comments-list {
+  margin-top: 1rem;
+}
+.pagination lightning-button {
+  min-width: 90px;
+}

@@ -16,3 +16,15 @@ The `sfdx-project.json` file contains useful configuration information for your 
 - [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
 - [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
 - [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+
+## Enhanced Comment LWC usage
+
+The repository includes LWCs for the Enhanced Comment feature under `force-app/main/default/lwc/`:
+
+- `enhancedCommentApp` - Record page wrapper (exposed to RecordPage). Hosts composer and timeline.
+- `enhancedCommentComposer` - Composer UI with rich text and file upload; dispatches `savecomment` events.
+- `enhancedCommentTimeline` - Timeline with search/pagination; dispatches `requestcomments` to ask for server data.
+- `enhancedCommentItem` - Renders a comment item and dispatches `reply` / `edit` events.
+
+Current status: UI scaffolding and event wiring implemented. Next steps: wire `enhancedCommentApp` to Apex (createComment, listComments), implement attachment linking (ContentDocumentLink), add Jest tests, and finalize styling/accessibility.
+

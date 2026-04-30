@@ -1,12 +1,12 @@
 <template>
-  <div class="timeline">
+  <div class="timeline slds-p-around_small">
     <lightning-card>
       <div class="slds-p-around_small">
-        <div class="slds-grid slds-wrap slds-gutters">
-          <div class="slds-col slds-size_1-of-2">
+        <div class="header slds-grid slds-grid_align-spread slds-align_absolute-center">
+          <div class="title slds-text-heading_small">Case Comments</div>
+          <div class="controls slds-grid slds-align_middle slds-gap_x-small">
+            <span class="count slds-badge">{commentsCountLabel}</span>
             <lightning-input type="search" placeholder="Search comments" onchange={handleSearch}></lightning-input>
-          </div>
-          <div class="slds-col slds-size_1-of-2 slds-text-align_right">
             <lightning-combobox label="Page size" value={pageSize} options={pageSizeOptions} onchange={handlePageSizeChange}></lightning-combobox>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="slds-m-top_small comments-list">
           <template if:true={comments}>
             <template for:each={comments} for:item="c">
-              <c-enhanced-comment-item key={c.Id} comment={c}></c-enhanced-comment-item>
+              <c-enhanced-comment-item key={c.Id} comment={c} onthumbvote={handleThumbVote} onreply={handleReplyEvent} onedit={handleEditEvent}></c-enhanced-comment-item>
             </template>
           </template>
           <template if:false={comments}>
@@ -22,7 +22,7 @@
           </template>
         </div>
 
-        <div class="slds-m-top_small slds-grid slds-grid_align-spread">
+        <div class="slds-m-top_small slds-grid slds-grid_align-spread pagination">
           <lightning-button label="Previous" onclick={handlePrev} disabled={isPrevDisabled}></lightning-button>
           <lightning-button label="Next" onclick={handleNext} disabled={isNextDisabled}></lightning-button>
         </div>

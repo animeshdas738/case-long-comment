@@ -6,12 +6,19 @@ export default class EnhancedCommentComposer extends LightningElement {
   @track bodyHtml = '';
   uploadedContentDocumentIds = [];
 
+  get charCount() {
+    return this.bodyHtml ? this.bodyHtml.length : 0;
+  }
+
+  get isPublishDisabled() {
+    return !this.bodyHtml || this.charCount < 2;
+  }
+
   handleRteChange(event) {
     this.bodyHtml = event.target.value;
   }
 
   handleUploadFinished(event) {
-    // lightning-file-upload returns files with documentId
     const uploadedFiles = event.detail.files || [];
     uploadedFiles.forEach(f => {
       if (f.documentId) this.uploadedContentDocumentIds.push(f.documentId);
@@ -22,6 +29,7 @@ export default class EnhancedCommentComposer extends LightningElement {
 
   handleSaveDraft() {
     this.saveComment(true);
+    this.dispatchEvent(new ShowToastEvent({ title: 'Saved draft', message: 'Draft was queued', variant: 'info' }));
   }
 
   handlePublish() {
@@ -29,18 +37,19 @@ export default class EnhancedCommentComposer extends LightningElement {
   }
 
   saveComment(isDraft) {
-    // Dispatch a custom event so the parent `enhancedCommentApp` or timeline can call Apex
     const detail = {
       recordId: this.recordId,
       bodyHtml: this.bodyHtml,
       isDraft,
       uploadedContentDocumentIds: this.uploadedContentDocumentIds
     };
-    this.dispatchEvent(new CustomEvent('savecomment', { detail }));
-    // optimistic UI: clear composer on publish
+    this.dispatchEvent(new CustomEvent('savecomment', { detail, bubbles: true }));
+
     if (!isDraft) {
+      // clear composer optimistically
       this.bodyHtml = '';
       this.uploadedContentDocumentIds = [];
+      this.dispatchEvent(new ShowToastEvent({ title: 'Published', message: 'Comment published (pending server)', variant: 'success' }));
     }
   }
 }

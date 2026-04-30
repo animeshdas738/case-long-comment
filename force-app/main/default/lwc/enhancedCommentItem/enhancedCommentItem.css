@@ -1,0 +1,16 @@
+.comment-item {
+  background: #fff;
+}
+.author-block .author-name {
+  font-size: 0.95rem;
+}
+.channel-badge {
+  margin-left: 0.25rem;
+}
+.comment-body {
+  margin-top: 0.75rem;
+}
+.attachments .attachment-item {
+  padding: 0.25rem 0;
+}
+/* thumbs removed for now */

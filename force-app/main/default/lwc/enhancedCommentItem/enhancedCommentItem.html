@@ -1,14 +1,16 @@
 <template>
   <div class="comment-item slds-box slds-m-bottom_small">
-    <div class="slds-grid slds-grid_align-spread">
-      <div>
-        <strong>{comment.AuthorName}</strong>
-        <span class="slds-text-body_small slds-m-left_x-small">#{comment.Comment_Number__c}</span>
-  <span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span>
+    <div class="slds-grid slds-grid_align-spread slds-align_absolute-center">
+      <div class="slds-grid slds-align_center author-block">
+        <div class="avatar slds-m-right_x-small">
+          <lightning-icon icon-name="standard:contact" alternative-text="author"></lightning-icon>
+        </div>
+        <div>
+          <div class="author-name"><strong>{comment.AuthorName}</strong> <span class="slds-text-body_small">#{comment.Comment_Number__c}</span></div>
+          <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div>
+        </div>
       </div>
-      <div>
-        <span class="slds-text-body_small">{comment.CreatedDate}</span>
-      </div>
+      <div class="slds-text-body_small">{comment.CreatedDate}</div>
     </div>
 
     <div class="slds-m-top_small comment-body" lwc:dom="manual" data-id={comment.Id}></div>
@@ -16,14 +18,17 @@
     <template if:true={commentAttachments}>
       <div class="slds-m-top_small attachments">
         <template for:each={commentAttachments} for:item="att">
-          <div key={att.ContentDocumentId} class="slds-text-body_small">{att.Title}</div>
+          <div key={att.ContentDocumentId} class="attachment-item slds-text-body_small">{att.Title}</div>
         </template>
       </div>
     </template>
 
-    <div class="slds-m-top_small slds-grid slds-grid_align-end slds-gap_x-small">
-      <lightning-button label="Reply" onclick={handleReply}></lightning-button>
-      <lightning-button label="Edit" variant="neutral" onclick={handleEdit}></lightning-button>
+    <div class="slds-m-top_small slds-grid slds-grid_align-spread action-row">
+      <div></div>
+      <div>
+        <lightning-button label="Reply" onclick={handleReply}></lightning-button>
+        <lightning-button label="Edit" variant="neutral" onclick={handleEdit}></lightning-button>
+      </div>
     </div>
   </div>
 </template>
