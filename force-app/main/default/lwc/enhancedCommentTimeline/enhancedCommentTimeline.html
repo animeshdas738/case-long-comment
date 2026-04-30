@@ -15,7 +15,7 @@
           <template if:true={comments}>
             <template for:each={comments} for:item="c">
               <div key={c.Id} class="timeline-node">
-                <div class="marker" aria-hidden="true"></div>
+                <div class="marker" aria-hidden="true">{c.Comment_Number__c}</div>
                 <div class="node-content">
                   <c-enhanced-comment-item comment={c} onreply={handleReplyEvent} onedit={handleEditEvent}></c-enhanced-comment-item>
                 </div>
