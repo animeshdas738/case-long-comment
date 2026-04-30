@@ -10,3 +10,29 @@
 .pagination lightning-button {
   min-width: 90px;
 }
+
+/* Timeline rail styles */
+.timeline-rail {
+  position: relative;
+  padding-left: 40px;
+}
+.timeline-node {
+  display: flex;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.timeline-node .marker {
+  width: 14px;
+  height: 14px;
+  background: #e6e6fb;
+  border-radius: 50%;
+  position: absolute;
+  left: 12px;
+  top: 6px;
+  box-shadow: 0 0 0 4px rgba(230,230,251,0.6);
+}
+.timeline-node .node-content {
+  margin-left: 36px;
+  width: 100%;
+}
+

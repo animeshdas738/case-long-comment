@@ -14,3 +14,27 @@
   padding: 0.25rem 0;
 }
 /* thumbs removed for now */
+/* Card style */
+.comment-item-card {
+  background: #f3f6f8;
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+.card-inner .author-line {
+  display: flex;
+  align-items: center;
+}
+.card-inner .avatar {
+  margin-right: 0.75rem;
+}
+.card-inner .meta .author-name {
+  font-size: 0.95rem;
+}
+.actions {
+  margin-top: 0.5rem;
+}
+.action-link {
+  margin-right: 1rem;
+  color: #2b74e4;
+  cursor: pointer;
+}
