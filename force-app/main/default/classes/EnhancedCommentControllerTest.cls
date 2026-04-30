@@ -10,7 +10,7 @@ private class EnhancedCommentControllerTest {
         System.assertNotEquals(null, createdId);
 
         // List comments
-        List<Enhanced_Comment__c> list = EnhancedCommentController.listComments(c.Id, 1, 10, null, null, null, false);
-        System.assert(list.size() > 0);
+        List<Enhanced_Comment__c> comments = EnhancedCommentController.listComments(c.Id, 1, 10, null, null, null, false);
+        System.assert(comments.size() > 0);
     }
 }
