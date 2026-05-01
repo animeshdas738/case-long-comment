@@ -40,6 +40,35 @@ export default class EnhancedCommentItem extends LightningElement {
     return this.isPublic ? 'Make Private' : 'Make Public';
   }
 
+  get publicIconName() {
+    return this.isPublic ? 'utility:lock' : 'utility:share';
+  }
+
+  get roleBadge() {
+    // example: show a short role; fallback null
+    return this.comment && this.comment.AuthorRole ? this.comment.AuthorRole : null;
+  }
+
+  get statusLabel() {
+    if (this.isDraft) return 'DRAFT';
+    return this.isPublic ? 'PUBLISHED' : 'PRIVATE';
+  }
+
+  get statusClass() {
+    if (this.isDraft) return 'status-draft';
+    return this.isPublic ? 'status-published' : 'status-private';
+  }
+
+  get statusClassName() {
+    return `status-badge ${this.statusClass}`;
+  }
+
+  get attachmentSummary() {
+    const a = this.comment && this.comment.Attachments ? this.comment.Attachments.length : 0;
+    if (a === 0) return null;
+    return `${a} ${a === 1 ? 'file' : 'files'}`;
+  }
+
   get commentAttachments() {
     return this.comment && this.comment.Attachments ? this.comment.Attachments : null;
   }
@@ -82,6 +111,14 @@ export default class EnhancedCommentItem extends LightningElement {
   handleTogglePublic() {
     const newValue = !this.isPublic;
     this.dispatchEvent(new CustomEvent('togglepublic', { detail: { commentId: this.comment.Id, isPublic: newValue }, bubbles: true, composed: true }));
+  }
+
+  handleArchive() {
+    this.dispatchEvent(new CustomEvent('archive', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
+  }
+
+  handleMore() {
+    this.dispatchEvent(new CustomEvent('more', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
   }
 
   handleTogglePublic() {

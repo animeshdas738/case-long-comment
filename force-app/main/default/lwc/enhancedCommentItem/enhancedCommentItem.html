@@ -1,28 +1,35 @@
 <template>
   <div class="comment-item-card">
-    <div class="card-inner">
+    <div class="card-inner" style="position: relative;">
           <div class="author-line">
             <div class="left-group">
               <div class="avatar"><lightning-icon icon-name="standard:contact" alternative-text="author"></lightning-icon></div>
               <div class="meta">
-                <div class="author-name"><strong>{comment.AuthorName}</strong></div>
+                <div class="author-name"><strong>{comment.AuthorName}</strong>
+                  <template if:true={roleBadge}><span class="role-badge">{roleBadge}</span></template>
+                  <template if:true={statusLabel}><span class={statusClassName}>{statusLabel}</span></template>
+                  <span class="time-inline">{formattedDate}</span>
+                </div>
               </div>
             </div>
 
             <div class="meta-right">
-              <div class="time">{formattedDate}</div>
-              <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div>
+              <!-- Channel badge hidden for now -->
+              <!-- <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div> -->
+            </div>
+          </div>
+          <div class="top-actions">
+            <lightning-button-group>
               <template if:true={isDraft}>
-                <div class="slds-m-top_x-small draft-row">
-                  <span class="slds-badge slds-theme_warning">Draft</span>
-                  <button class="publish-button slds-button slds-button_neutral slds-m-left_x-small" onclick={handlePublish}>Publish</button>
-                </div>
+                <lightning-button-icon icon-name="utility:check" alternative-text="Publish" title="Publish" onclick={handlePublish}></lightning-button-icon>
+              </template>
+              <template if:false={isDraft}>
+                <lightning-button-icon icon-name={publicIconName} alternative-text={publicLabel} title={publicLabel} onclick={handleTogglePublic}></lightning-button-icon>
               </template>
 
-              <div class="slds-m-top_x-small public-row">
-                <button class="public-toggle slds-button slds-button_outline-brand" onclick={handleTogglePublic}>{publicLabel}</button>
-              </div>
-            </div>
+              <lightning-button-icon icon-name="utility:archive" alternative-text="Archive" title="Archive" onclick={handleArchive}></lightning-button-icon>
+              <lightning-button-icon icon-name="utility:down" alternative-text="More" title="More" onclick={handleMore}></lightning-button-icon>
+            </lightning-button-group>
           </div>
 
       <div class="slds-m-top_small comment-body" lwc:dom="manual" data-id={comment.Id}></div>
@@ -33,6 +40,10 @@
             <div key={att.ContentDocumentId} class="attachment-item slds-text-body_small">{att.Title}</div>
           </template>
         </div>
+      </template>
+
+      <template if:true={attachmentSummary}>
+        <div class="attachment-summary">{attachmentSummary}</div>
       </template>
 
       <div class="slds-m-top_small actions">

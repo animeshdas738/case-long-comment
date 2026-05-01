@@ -89,4 +89,16 @@ public with sharing class EnhancedCommentController {
             throw new AuraHandledException('Unable to update public flag: ' + e.getMessage());
         }
     }
+
+    @AuraEnabled
+    public static void archiveComment(Id commentId) {
+        if (commentId == null) throw new AuraHandledException('commentId is required');
+        try {
+            Enhanced_Comment__c ec = [SELECT Id, Status__c FROM Enhanced_Comment__c WHERE Id = :commentId LIMIT 1];
+            ec.Status__c = 'Archived';
+            update ec;
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to archive comment: ' + e.getMessage());
+        }
+    }
 }

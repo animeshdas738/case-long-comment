@@ -3,6 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import listComments from '@salesforce/apex/EnhancedCommentController.listComments';
 import publishComment from '@salesforce/apex/EnhancedCommentController.publishComment';
 import setCommentPublic from '@salesforce/apex/EnhancedCommentController.setCommentPublic';
+import archiveComment from '@salesforce/apex/EnhancedCommentController.archiveComment';
 
 export default class EnhancedCommentTimeline extends LightningElement {
   @api recordId;
@@ -26,6 +27,7 @@ export default class EnhancedCommentTimeline extends LightningElement {
     // listen for publish and togglepublic events from item children
     this.addEventListener('publish', this.handlePublishEvent.bind(this));
     this.addEventListener('togglepublic', this.handleTogglePublicEvent.bind(this));
+  this.addEventListener('archive', this.handleArchiveEvent.bind(this));
   }
 
   handleSaveComment(event) {
@@ -163,6 +165,20 @@ export default class EnhancedCommentTimeline extends LightningElement {
     } else {
       // if not present, prepend
       this.prependComment(mapped);
+    }
+  }
+
+  async handleArchiveEvent(event) {
+    const commentId = event.detail && event.detail.commentId;
+    if (!commentId) return;
+    try {
+      await archiveComment({ commentId });
+      // remove from list
+      this.comments = this.comments.filter(c => c.Id !== commentId);
+      this.totalCount = Math.max(0, (this.totalCount || 0) - 1);
+      this.dispatchEvent(new ShowToastEvent({ title: 'Archived', message: 'Comment archived', variant: 'success' }));
+    } catch (err) {
+      this.dispatchEvent(new ShowToastEvent({ title: 'Error', message: err && err.body && err.body.message ? err.body.message : (err.message || 'Server error'), variant: 'error' }));
     }
   }
 

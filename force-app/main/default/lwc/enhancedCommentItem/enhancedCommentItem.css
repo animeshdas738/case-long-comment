@@ -50,7 +50,13 @@
   color: #6b6b6b;
 }
 .channel-badge {
-  margin-top: 0.25rem;
+  display: none; /* hidden for now */
+}
+
+.time-inline {
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b6b6b;
 }
 
 .draft-row {
@@ -69,6 +75,70 @@
 .public-toggle {
   font-size: 0.85rem;
   padding: 0.15rem 0.5rem;
+}
+
+.top-actions {
+  position: absolute;
+  right: 1rem;
+  top: 0.75rem;
+  display: flex;
+  gap: 0.25rem;
+}
+.top-actions lightning-button-icon,
+.top-actions .slds-button_icon-border-filled {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+.top-actions lightning-button-icon {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 4px;
+}
+.top-actions lightning-button-icon[title="Publish"] {
+  background: #f3fff3;
+  border-color: #d1f0d1;
+}
+.status-badge {
+  display: inline-block;
+  background: #e6f7ea;
+  color: #2e7a3b;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+.status-draft {
+  background: #fff4e5;
+  color: #a66300;
+}
+.status-private {
+  background: #f3e8ff;
+  color: #5b2e7e;
+}
+.status-published {
+  background: #e6f7ea;
+  color: #2e7a3b;
+}
+.role-badge {
+  display: inline-block;
+  background: #eef3ff;
+  color: #1f4f9a;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+.attachments .attachment-item {
+  padding: 0.5rem 0;
+  color: #4b4b4b;
+}
+.attachment-summary {
+  border-top: 1px solid #ececec;
+  padding: 0.75rem 1rem;
+  color: #57606a;
 }
 .actions {
   margin-top: 0.5rem;
