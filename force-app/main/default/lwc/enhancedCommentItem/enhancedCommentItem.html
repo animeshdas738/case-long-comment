@@ -1,13 +1,25 @@
 <template>
   <div class="comment-item-card">
     <div class="card-inner">
-      <div class="author-line">
-        <div class="avatar"><lightning-icon icon-name="standard:contact" alternative-text="author"></lightning-icon></div>
-        <div class="meta">
-          <div class="author-name"><strong>{comment.AuthorName}</strong> <span class="time">{comment.CreatedDate}</span></div>
-          <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div>
-        </div>
-      </div>
+          <div class="author-line">
+            <div class="left-group">
+              <div class="avatar"><lightning-icon icon-name="standard:contact" alternative-text="author"></lightning-icon></div>
+              <div class="meta">
+                <div class="author-name"><strong>{comment.AuthorName}</strong></div>
+              </div>
+            </div>
+
+            <div class="meta-right">
+              <div class="time">{formattedDate}</div>
+              <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div>
+              <template if:true={isDraft}>
+                <div class="slds-m-top_x-small draft-row">
+                  <span class="slds-badge slds-theme_warning">Draft</span>
+                  <button class="publish-button slds-button slds-button_neutral slds-m-left_x-small" onclick={handlePublish}>Publish</button>
+                </div>
+              </template>
+            </div>
+          </div>
 
       <div class="slds-m-top_small comment-body" lwc:dom="manual" data-id={comment.Id}></div>
 

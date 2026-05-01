@@ -57,6 +57,7 @@ export default class EnhancedCommentTimeline extends LightningElement {
         return {
           Id: r.Id,
           Comment_Number__c: r.Comment_Number__c,
+          Is_Draft__c: r.Is_Draft__c,
           Body__c: r.Body__c,
           Plain_Body__c: r.Plain_Body__c,
           Channel__c: r.Channel__c,

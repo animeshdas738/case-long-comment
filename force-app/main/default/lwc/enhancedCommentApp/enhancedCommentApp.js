@@ -31,6 +31,7 @@ export default class EnhancedCommentApp extends LightningElement {
           const mapped = {
             Id: ec.Id,
             Comment_Number__c: ec.Comment_Number__c,
+            Is_Draft__c: ec.Is_Draft__c,
             Body__c: ec.Body__c,
             Plain_Body__c: ec.Plain_Body__c,
             Channel__c: ec.Channel__c,

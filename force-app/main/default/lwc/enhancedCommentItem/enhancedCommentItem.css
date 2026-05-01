@@ -30,6 +30,38 @@
 .card-inner .meta .author-name {
   font-size: 0.95rem;
 }
+.card-inner .author-line {
+  justify-content: space-between;
+}
+.card-inner .author-line .left-group {
+  display: flex;
+  align-items: center;
+  min-width: 0; /* allow truncation */
+}
+.meta-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 1rem;
+  white-space: nowrap;
+}
+.meta-right .time {
+  font-size: 0.85rem;
+  color: #6b6b6b;
+}
+.channel-badge {
+  margin-top: 0.25rem;
+}
+
+.draft-row {
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+.publish-button {
+  font-size: 0.85rem;
+  padding: 0.15rem 0.5rem;
+}
 .actions {
   margin-top: 0.5rem;
 }
@@ -37,4 +69,16 @@
   margin-right: 1rem;
   color: #2b74e4;
   cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  .card-inner .author-line {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .meta-right {
+    align-items: flex-start;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
 }

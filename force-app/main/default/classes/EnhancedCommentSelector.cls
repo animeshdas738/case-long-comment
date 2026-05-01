@@ -1,5 +1,5 @@
 public with sharing class EnhancedCommentSelector extends BaseSelector {
-    private static final List<String> FIELDS = new List<String>{'Id','Comment_Number__c','Body__c','Plain_Body__c','Channel__c','Is_Public__c','CreatedById','CreatedDate','Color_Class__c','CreatedBy.Name','Case__c'};
+    private static final List<String> FIELDS = new List<String>{'Id','Comment_Number__c','Body__c','Plain_Body__c','Channel__c','Is_Public__c','Is_Draft__c','CreatedById','CreatedDate','Color_Class__c','CreatedBy.Name','Case__c'};
 
     public static List<Enhanced_Comment__c> selectForCase(Id caseId, Integer pageSize){
         List<String> whereClauses = new List<String>();
