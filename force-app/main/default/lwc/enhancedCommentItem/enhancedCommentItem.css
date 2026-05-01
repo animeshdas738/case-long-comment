@@ -1,43 +1,60 @@
+/* Core */
 .comment-item {
   background: #fff;
 }
+
 .author-block .author-name {
   font-size: 0.95rem;
 }
+
 .channel-badge {
   margin-left: 0.25rem;
 }
+
 .comment-body {
   margin-top: 0.75rem;
 }
+
 .attachments .attachment-item {
   padding: 0.25rem 0;
 }
-/* thumbs removed for now */
+
 /* Card style */
 .comment-item-card {
-  background: #f3f6f8;
-  border-radius: 12px;
-  padding: 0.75rem;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid #e6e9ee;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
 }
+
 .card-inner .author-line {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
+
+/* Ensure content doesn't flow beneath absolute-positioned action buttons */
+.card-inner {
+  padding-right: 3.5rem;
+  position: relative;
+}
+
 .card-inner .avatar {
   margin-right: 0.75rem;
+  margin-left: -28px; /* pull avatar left to overlap the rail */
 }
+
 .card-inner .meta .author-name {
   font-size: 0.95rem;
 }
-.card-inner .author-line {
-  justify-content: space-between;
-}
+
 .card-inner .author-line .left-group {
   display: flex;
   align-items: center;
   min-width: 0; /* allow truncation */
 }
+
 .meta-right {
   display: flex;
   flex-direction: column;
@@ -45,10 +62,12 @@
   margin-left: 1rem;
   white-space: nowrap;
 }
+
 .meta-right .time {
   font-size: 0.85rem;
   color: #6b6b6b;
 }
+
 .channel-badge {
   display: none; /* hidden for now */
 }
@@ -59,11 +78,17 @@
   color: #6b6b6b;
 }
 
+.comment-body {
+  margin-top: 0.75rem;
+  padding-right: 1rem; /* give space so body text doesn't sit under top actions */
+}
+
 .draft-row {
   display: flex;
   align-items: center;
   margin-top: 0.25rem;
 }
+
 .publish-button {
   font-size: 0.85rem;
   padding: 0.15rem 0.5rem;
@@ -72,34 +97,30 @@
 .public-row {
   margin-top: 0.5rem;
 }
+
 .public-toggle {
   font-size: 0.85rem;
   padding: 0.15rem 0.5rem;
 }
 
-.top-actions {
+/*.top-actions {
   position: absolute;
   right: 1rem;
   top: 0.75rem;
   display: flex;
   gap: 0.25rem;
-}
-/*.top-actions lightning-button-icon,
-.top-actions .slds-button_icon-border-filled {
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-}
-.top-actions lightning-button-icon {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 4px;
-}
-.top-actions lightning-button-icon[title="Publish"] {
-  background: #f3fff3;
-  border-color: #d1f0d1;
 }*/
+.top-actions {
+  z-index: 2; /* keep buttons above the body */
+}
+
+/*.top-actions lightning-button-icon {
+  background: #fff;
+  border: 1px solid #e6e9ee;
+  border-radius: 8px;
+  padding: 6px;
+}*/
+
 .status-badge {
   display: inline-block;
   background: #e6f7ea;
@@ -110,18 +131,22 @@
   font-size: 0.75rem;
   margin-left: 0.5rem;
 }
+
 .status-draft {
   background: #fff4e5;
   color: #a66300;
 }
+
 .status-private {
   background: #f3e8ff;
   color: #5b2e7e;
 }
+
 .status-published {
   background: #e6f7ea;
   color: #2e7a3b;
 }
+
 .role-badge {
   display: inline-block;
   background: #eef3ff;
@@ -131,18 +156,22 @@
   font-size: 0.75rem;
   margin-left: 0.5rem;
 }
+
 .attachments .attachment-item {
   padding: 0.5rem 0;
   color: #4b4b4b;
 }
+
 .attachment-summary {
   border-top: 1px solid #ececec;
   padding: 0.75rem 1rem;
   color: #57606a;
 }
+
 .actions {
   margin-top: 0.5rem;
 }
+
 .action-link {
   margin-right: 1rem;
   color: #2b74e4;
@@ -160,3 +189,4 @@
     margin-top: 0.5rem;
   }
 }
+

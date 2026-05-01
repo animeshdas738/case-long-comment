@@ -1,7 +1,9 @@
 <template>
   <div class="comment-item-card">
     <div class="card-inner" style="position: relative;">
-          <div class="author-line">
+      <lightning-layout horizontal-align="spread" vertical-align="start">
+        <lightning-layout-item size="9">
+          <div class="author-line" style="padding-left: 1rem;">
             <div class="left-group">
               <div class="avatar">
                 <lightning-avatar variant="circle" size="small" alternative-text={comment.AuthorName} initials={commentAuthorInitials} src={commentAuthorPhotoUrl}></lightning-avatar>
@@ -24,21 +26,25 @@
               <!-- <div class="slds-text-body_small slds-m-top_x-small"><span class="slds-badge channel-badge" data-channel-id={comment.Id}>{comment.Channel__c}</span></div> -->
             </div>
           </div>
-          <div class="top-actions">
+        </lightning-layout-item>
+        <lightning-layout-item size="3">
+          <div class="top-actions" style="text-align:right">
             <lightning-button-group>
-              <lightning-button-icon icon-name="utility:edit" alternative-text="Edit" title="Edit" onclick={toggleEdit}></lightning-button-icon>
+              <lightning-button-icon icon-name="utility:edit" alternative-text="Edit" title="Edit" onclick={toggleEdit} size="smalll"></lightning-button-icon>
               <template if:true={isDraft}>
-                <lightning-button-icon icon-name="utility:check" alternative-text="Publish" title="Publish" onclick={handlePublish}></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:check" alternative-text="Publish" title="Publish" onclick={handlePublish} size="smalll"></lightning-button-icon>
               </template>
               <template if:false={isDraft}>
-                <lightning-button-icon icon-name={publicIconName} alternative-text={publicLabel} title={publicLabel} onclick={handleTogglePublic}></lightning-button-icon>
+                <lightning-button-icon icon-name={publicIconName} alternative-text={publicLabel} title={publicLabel} onclick={handleTogglePublic} size="smalll"></lightning-button-icon>
               </template>
 
-              <lightning-button-icon icon-name="utility:archive" alternative-text="Archive" title="Archive" onclick={handleArchive}></lightning-button-icon>
+              <lightning-button-icon icon-name="utility:archive" alternative-text="Archive" title="Archive" onclick={handleArchive} size="smalll"></lightning-button-icon>
               <!--<lightning-button-icon icon-name="utility:down" alternative-text="More" title="More" onclick={handleMore}></lightning-button-icon>-->
             </lightning-button-group>
           </div>
-
+        </lightning-layout-item>
+      </lightning-layout>
+          
       <div class="slds-m-top_small comment-body" lwc:dom="manual" data-id={comment.Id}></div>
 
       <template if:true={commentAttachments}>

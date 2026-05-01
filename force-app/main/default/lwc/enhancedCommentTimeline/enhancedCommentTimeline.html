@@ -2,7 +2,7 @@
   <div class="timeline slds-p-around_small">
     <lightning-card>
       <div class="slds-p-around_small">
-        <div class="header slds-grid slds-grid_align-spread slds-align_absolute-center slds-m-bottom_small">
+  <div class="header slds-grid slds-grid_align-spread slds-m-bottom_small">
           <div class="title slds-text-heading_small">Case Comments</div>
           <div class="controls slds-grid slds-align_middle slds-gap_x-small">
             <span class="count compact slds-badge">{commentsCountLabel}</span>
@@ -11,14 +11,13 @@
           </div>
         </div>
 
-  <div class="slds-m-top_small comments-list timeline-rail" style="max-height: 60vh; overflow: auto;">
+  <div class="slds-m-top_small comments-list" style="max-height: 60vh; overflow: auto; padding-left: 8px;">
           <template if:true={comments}>
             <template for:each={comments} for:item="c">
               <div key={c.Id} class="timeline-node">
-                <div class="marker" aria-hidden="true">{c.Comment_Number__c}</div>
-                <div class="node-content">
-                  <c-enhanced-comment-item comment={c} onreply={handleReplyEvent} onedit={handleEditEvent}></c-enhanced-comment-item>
-                </div>
+                  <div class="node-content">
+                    <c-enhanced-comment-item comment={c} onreply={handleReplyEvent} onedit={handleEditEvent}></c-enhanced-comment-item>
+                  </div>
               </div>
             </template>
           </template>
