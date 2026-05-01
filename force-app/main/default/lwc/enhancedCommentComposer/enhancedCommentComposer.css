@@ -6,6 +6,10 @@
   color: #666;
   font-size: 0.875rem;
 }
+.meta lightning-input {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
 .actions lightning-button {
   margin-left: 0.5rem;
 }

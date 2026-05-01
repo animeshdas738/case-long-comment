@@ -10,6 +10,9 @@
           </div>
           <div class="slds-col slds-text-align_right meta">
             <div class="char-count">{charCount} chars</div>
+            <div class="slds-m-top_x-small">
+              <lightning-input type="checkbox" name="isPublic" label="Public" checked={isPublic} onchange={handlePublicChange}></lightning-input>
+            </div>
           </div>
         </div>
 

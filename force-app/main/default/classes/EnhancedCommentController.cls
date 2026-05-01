@@ -61,4 +61,32 @@ public with sharing class EnhancedCommentController {
         if (commentId == null) return null;
         return EnhancedCommentSelector.selectById(commentId);
     }
+
+    @AuraEnabled
+    public static Enhanced_Comment__c publishComment(Id commentId) {
+        if (commentId == null) throw new AuraHandledException('commentId is required');
+        try {
+            Enhanced_Comment__c ec = [SELECT Id, Is_Draft__c FROM Enhanced_Comment__c WHERE Id = :commentId LIMIT 1];
+            if (ec.Is_Draft__c == false) return EnhancedCommentSelector.selectById(commentId);
+            ec.Is_Draft__c = false;
+            update ec;
+            return EnhancedCommentSelector.selectById(commentId);
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to publish comment: ' + e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static Enhanced_Comment__c setCommentPublic(Id commentId, Boolean isPublic) {
+        if (commentId == null) throw new AuraHandledException('commentId is required');
+        try {
+            Enhanced_Comment__c ec = [SELECT Id, Is_Public__c FROM Enhanced_Comment__c WHERE Id = :commentId LIMIT 1];
+            if (ec.Is_Public__c == isPublic) return EnhancedCommentSelector.selectById(commentId);
+            ec.Is_Public__c = isPublic;
+            update ec;
+            return EnhancedCommentSelector.selectById(commentId);
+        } catch (Exception e) {
+            throw new AuraHandledException('Unable to update public flag: ' + e.getMessage());
+        }
+    }
 }

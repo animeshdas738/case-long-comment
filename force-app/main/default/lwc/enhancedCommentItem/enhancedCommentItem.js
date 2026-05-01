@@ -32,6 +32,14 @@ export default class EnhancedCommentItem extends LightningElement {
     return `background: ${color}; padding: 0.25rem 0.5rem; border-radius: 0.25rem;`;
   }
 
+  get isPublic() {
+    return this.comment && this.comment.Is_Public__c === true;
+  }
+
+  get publicLabel() {
+    return this.isPublic ? 'Make Private' : 'Make Public';
+  }
+
   get commentAttachments() {
     return this.comment && this.comment.Attachments ? this.comment.Attachments : null;
   }
@@ -59,15 +67,25 @@ export default class EnhancedCommentItem extends LightningElement {
   }
 
   handleReply() {
-    this.dispatchEvent(new CustomEvent('reply', { detail: { commentId: this.comment.Id } }));
+    this.dispatchEvent(new CustomEvent('reply', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
   }
 
   handleEdit() {
-    this.dispatchEvent(new CustomEvent('edit', { detail: { commentId: this.comment.Id } }));
+    this.dispatchEvent(new CustomEvent('edit', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
   }
 
   handlePublish() {
     // Parent should handle the actual publish (Apex update). We emit an event so parent can call the controller.
-    this.dispatchEvent(new CustomEvent('publish', { detail: { commentId: this.comment.Id }, bubbles: true }));
+    this.dispatchEvent(new CustomEvent('publish', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
+  }
+
+  handleTogglePublic() {
+    const newValue = !this.isPublic;
+    this.dispatchEvent(new CustomEvent('togglepublic', { detail: { commentId: this.comment.Id, isPublic: newValue }, bubbles: true, composed: true }));
+  }
+
+  handleTogglePublic() {
+    const newValue = !this.isPublic;
+    this.dispatchEvent(new CustomEvent('togglepublic', { detail: { commentId: this.comment.Id, isPublic: newValue }, bubbles: true, composed: true }));
   }
 }

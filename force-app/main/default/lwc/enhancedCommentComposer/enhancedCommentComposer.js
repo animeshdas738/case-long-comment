@@ -5,6 +5,7 @@ export default class EnhancedCommentComposer extends LightningElement {
   @api recordId;
   @track bodyHtml = '';
   uploadedContentDocumentIds = [];
+  isPublic = true;
 
   get charCount() {
     return this.bodyHtml ? this.bodyHtml.length : 0;
@@ -28,19 +29,25 @@ export default class EnhancedCommentComposer extends LightningElement {
   }
 
   handleSaveDraft() {
-    this.saveComment(true);
+    // Drafts must always be private
+    this.saveComment(true, false);
     this.dispatchEvent(new ShowToastEvent({ title: 'Saved draft', message: 'Draft was queued', variant: 'info' }));
   }
 
   handlePublish() {
-    this.saveComment(false);
+    this.saveComment(false, this.isPublic);
   }
 
-  saveComment(isDraft) {
+  handlePublicChange(event) {
+    this.isPublic = event.target.checked;
+  }
+
+  saveComment(isDraft, isPublic) {
     const detail = {
       recordId: this.recordId,
       bodyHtml: this.bodyHtml,
       isDraft,
+      isPublic,
       uploadedContentDocumentIds: this.uploadedContentDocumentIds
     };
     this.dispatchEvent(new CustomEvent('savecomment', { detail, bubbles: true }));
