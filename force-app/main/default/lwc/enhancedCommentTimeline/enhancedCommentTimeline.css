@@ -21,6 +21,10 @@
   position: relative;
   margin-bottom: 1.5rem;
 }
+.load-indicator {
+  text-align: center;
+  margin-top: 0.5rem;
+}
 .timeline-node .marker {
   width: 28px;
   height: 28px;

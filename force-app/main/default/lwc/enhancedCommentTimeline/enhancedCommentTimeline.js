@@ -8,10 +8,12 @@ import archiveComment from '@salesforce/apex/EnhancedCommentController.archiveCo
 export default class EnhancedCommentTimeline extends LightningElement {
   @api recordId;
   @track comments = [];
-  @track pageSize = 10;
+  @track pageSize = 5;
   pageNumber = 1;
   searchText = '';
   totalCount = 0;
+  loading = false;
+  hasMore = true;
 
   pageSizeOptions = [
     { label: '5', value: '5' },
@@ -20,7 +22,7 @@ export default class EnhancedCommentTimeline extends LightningElement {
   ];
 
   connectedCallback() {
-    this.loadComments();
+    this.loadComments(false);
     // listen for savecomment bubbled events
     this.addEventListener('savecomment', this.handleSaveComment.bind(this));
     this.addEventListener('commentsloaded', this.handleCommentsLoaded.bind(this));
@@ -28,6 +30,14 @@ export default class EnhancedCommentTimeline extends LightningElement {
     this.addEventListener('publish', this.handlePublishEvent.bind(this));
     this.addEventListener('togglepublic', this.handleTogglePublicEvent.bind(this));
   this.addEventListener('archive', this.handleArchiveEvent.bind(this));
+    // attach scroll listener after render
+    // use a small timeout to ensure DOM is available
+    setTimeout(() => {
+      const container = this.template.querySelector('.comments-list');
+      if (container) {
+        container.addEventListener('scroll', this._onScrollBound = this._onScroll.bind(this));
+      }
+    }, 200);
   }
 
   handleSaveComment(event) {
@@ -46,60 +56,69 @@ export default class EnhancedCommentTimeline extends LightningElement {
   handleSearch(event) {
     this.searchText = event.target.value;
     this.pageNumber = 1;
-    this.loadComments();
+    this.hasMore = true;
+    this.loadComments(false);
   }
 
   handlePageSizeChange(event) {
+    // keep pageSize but reset pagination
     this.pageSize = parseInt(event.target.value, 10);
     this.pageNumber = 1;
-    this.loadComments();
+    this.hasMore = true;
+    this.loadComments(false);
   }
 
   async loadComments() {
     // Call Apex listComments to fetch comments for this record
+    if (this.loading || !this.hasMore) return;
+    this.loading = true;
     try {
       const result = await listComments({ caseId: this.recordId, pageNumber: this.pageNumber, pageSize: this.pageSize, searchText: this.searchText, channels: null, types: null, includeDrafts: false });
-      // Map result into UI-friendly shapes
-      const rows = (result || []).map(r => {
-        return {
-          Id: r.Id,
-          Comment_Number__c: r.Comment_Number__c,
-          Is_Draft__c: r.Is_Draft__c,
-          Is_Public__c: r.Is_Public__c,
-          Body__c: r.Body__c,
-          Plain_Body__c: r.Plain_Body__c,
-          Channel__c: r.Channel__c,
-          CreatedDate: r.CreatedDate,
-          Color_Class__c: r.Color_Class__c,
-          CreatedBy: r.CreatedBy,
-          AuthorName: r.CreatedBy ? r.CreatedBy.Name : null,
-          // Attachments will be populated later when we add them
-          Attachments: r.Attachments || null
-        };
-      });
-      this.comments = rows;
+      const rows = (result || []).map(r => ({
+        Id: r.Id,
+        Comment_Number__c: r.Comment_Number__c,
+        Is_Draft__c: r.Is_Draft__c,
+        Is_Public__c: r.Is_Public__c,
+        Body__c: r.Body__c,
+        Plain_Body__c: r.Plain_Body__c,
+        Channel__c: r.Channel__c,
+        CreatedDate: r.CreatedDate,
+        Color_Class__c: r.Color_Class__c,
+        CreatedBy: r.CreatedBy,
+        AuthorName: r.CreatedBy ? r.CreatedBy.Name : null,
+        Attachments: r.Attachments || null
+      }));
+
+      if (this.pageNumber === 1) {
+        this.comments = rows;
+      } else {
+        this.comments = (this.comments || []).concat(rows);
+      }
+
+      // If fewer results returned than pageSize, no more data
+      if (!rows || rows.length < this.pageSize) {
+        this.hasMore = false;
+      } else {
+        this.pageNumber++;
+      }
+
       this.totalCount = this.comments.length;
     } catch (err) {
       // Fail softly and keep UI usable
-      this.comments = [];
-      this.totalCount = 0;
-      // console log the error
       // eslint-disable-next-line no-console
       console.error('Failed to load comments', err);
       this.dispatchEvent(new ShowToastEvent({ title: 'Error loading comments', message: err && err.body && err.body.message ? err.body.message : (err.message || 'Server error'), variant: 'error' }));
+    } finally {
+      this.loading = false;
     }
   }
 
   handlePrev() {
-    if (this.pageNumber > 1) {
-      this.pageNumber--;
-      this.loadComments();
-    }
+    // pagination disabled in lazy loading mode
   }
 
   handleNext() {
-    this.pageNumber++;
-    this.loadComments();
+    // pagination disabled in lazy loading mode
   }
 
   handleThumbVote(event) {
@@ -199,5 +218,27 @@ export default class EnhancedCommentTimeline extends LightningElement {
     if (!comment) return;
     this.comments = [comment].concat(this.comments || []);
     this.totalCount = (this.totalCount || 0) + 1;
+  }
+
+  _onScroll(e) {
+    try {
+      const el = e.target;
+      if (!el) return;
+      const threshold = 80;
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - threshold) {
+        // load more
+        this.loadComments();
+      }
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  disconnectedCallback() {
+    if (this._onScrollBound) {
+      const container = this.template && this.template.querySelector && this.template.querySelector('.comments-list');
+      if (container) container.removeEventListener('scroll', this._onScrollBound);
+      this._onScrollBound = null;
+    }
   }
 }

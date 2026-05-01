@@ -11,7 +11,7 @@
           </div>
         </div>
 
-        <div class="slds-m-top_small comments-list timeline-rail">
+  <div class="slds-m-top_small comments-list timeline-rail" style="max-height: 60vh; overflow: auto;">
           <template if:true={comments}>
             <template for:each={comments} for:item="c">
               <div key={c.Id} class="timeline-node">
@@ -27,10 +27,17 @@
           </template>
         </div>
 
-        <div class="slds-m-top_small slds-grid slds-grid_align-spread pagination">
-          <lightning-button label="Previous" onclick={handlePrev} disabled={isPrevDisabled}></lightning-button>
-          <lightning-button label="Next" onclick={handleNext} disabled={isNextDisabled}></lightning-button>
+        <div class="slds-m-top_x-small slds-p-vertical_small load-indicator">
+          <template if:true={loading}>
+            <div class="slds-spinner slds-spinner_small slds-spinner_inline" role="status"><span class="slds-assistive-text">Loading</span></div>
+            <span class="slds-m-left_small">Loading more comments…</span>
+          </template>
+          <template if:false={hasMore}>
+            <div class="slds-text-body_small slds-text-align_center">End of comments</div>
+          </template>
         </div>
+
+        <!-- Pagination removed in favor of lazy loading -->
       </div>
     </lightning-card>
   </div>

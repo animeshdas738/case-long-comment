@@ -3,12 +3,18 @@
     <div class="card-inner" style="position: relative;">
           <div class="author-line">
             <div class="left-group">
-              <div class="avatar"><lightning-icon icon-name="standard:contact" alternative-text="author"></lightning-icon></div>
+              <div class="avatar">
+                <lightning-avatar variant="circle" size="small" alternative-text={comment.AuthorName} initials={commentAuthorInitials} src={commentAuthorPhotoUrl}></lightning-avatar>
+              </div>
               <div class="meta">
                 <div class="author-name"><strong>{comment.AuthorName}</strong>
                   <template if:true={roleBadge}><span class="role-badge">{roleBadge}</span></template>
-                  <template if:true={statusLabel}><span class={statusClassName}>{statusLabel}</span></template>
-                  <span class="time-inline">{formattedDate}</span>
+                  <template if:true={isDraft}><span class={statusClassName}>{statusLabel}</span></template>
+                  <template if:true={isPublished}><span class={statusClassName}>{publishedLabel}</span></template>
+                  <template if:true={isPrivate}>
+                    <lightning-icon icon-name="utility:lock" alternative-text="Private" title="Private" class="lock-inline" size="x-small"></lightning-icon>
+                  </template>
+                  <span class="time-inline" title={formattedDateTitle}>{formattedDate}</span>
                 </div>
               </div>
             </div>

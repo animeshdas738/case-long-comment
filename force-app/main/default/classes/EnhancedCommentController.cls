@@ -1,9 +1,10 @@
 public with sharing class EnhancedCommentController {
     @AuraEnabled(cacheable=true)
     public static List<Enhanced_Comment__c> listComments(Id caseId, Integer pageNumber, Integer pageSize, String searchText, List<String> channels, List<String> types, Boolean includeDrafts) {
-        // Delegate to selector for now
+        // Delegate to selector for now with paging
         Integer effectivePageSize = (pageSize == null || pageSize <= 0) ? 20 : pageSize;
-        return EnhancedCommentSelector.selectForCase(caseId, effectivePageSize);
+        Integer effectivePageNumber = (pageNumber == null || pageNumber <= 0) ? 1 : pageNumber;
+        return EnhancedCommentSelector.selectForCase(caseId, effectivePageNumber, effectivePageSize);
     }
 
     @AuraEnabled
