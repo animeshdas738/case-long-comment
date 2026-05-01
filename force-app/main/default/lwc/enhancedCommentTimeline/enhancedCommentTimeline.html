@@ -5,9 +5,9 @@
         <div class="header slds-grid slds-grid_align-spread slds-align_absolute-center slds-m-bottom_small">
           <div class="title slds-text-heading_small">Case Comments</div>
           <div class="controls slds-grid slds-align_middle slds-gap_x-small">
-            <span class="count slds-badge">{commentsCountLabel}</span>
-            <lightning-input type="search" placeholder="Search comments" onchange={handleSearch}></lightning-input>
-            <lightning-combobox label="Page size" value={pageSize} options={pageSizeOptions} onchange={handlePageSizeChange}></lightning-combobox>
+            <span class="count compact slds-badge">{commentsCountLabel}</span>
+            <lightning-input type="search" placeholder="Search comments" onchange={handleSearch} variant="label-hidden"></lightning-input>
+            <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" title="Refresh" onclick={handleRefresh} class="refresh-icon"></lightning-button-icon>
           </div>
         </div>
 

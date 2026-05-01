@@ -154,8 +154,8 @@ export default class EnhancedCommentItem extends LightningElement {
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      // Per UX: do not prefill existing text when editing; start with an empty editor
-      this.editHtml = '';
+      // Prefill existing text when editing
+      this.editHtml = this.comment ? (this.comment.Body__c || this.comment.Plain_Body__c || '') : '';
     }
   }
 

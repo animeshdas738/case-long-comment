@@ -84,7 +84,7 @@
   display: flex;
   gap: 0.25rem;
 }
-.top-actions lightning-button-icon,
+/*.top-actions lightning-button-icon,
 .top-actions .slds-button_icon-border-filled {
   width: 32px;
   height: 32px;
@@ -99,7 +99,7 @@
 .top-actions lightning-button-icon[title="Publish"] {
   background: #f3fff3;
   border-color: #d1f0d1;
-}
+}*/
 .status-badge {
   display: inline-block;
   background: #e6f7ea;

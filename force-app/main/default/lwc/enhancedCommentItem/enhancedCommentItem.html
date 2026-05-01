@@ -26,6 +26,7 @@
           </div>
           <div class="top-actions">
             <lightning-button-group>
+              <lightning-button-icon icon-name="utility:edit" alternative-text="Edit" title="Edit" onclick={toggleEdit}></lightning-button-icon>
               <template if:true={isDraft}>
                 <lightning-button-icon icon-name="utility:check" alternative-text="Publish" title="Publish" onclick={handlePublish}></lightning-button-icon>
               </template>
@@ -34,7 +35,7 @@
               </template>
 
               <lightning-button-icon icon-name="utility:archive" alternative-text="Archive" title="Archive" onclick={handleArchive}></lightning-button-icon>
-              <lightning-button-icon icon-name="utility:down" alternative-text="More" title="More" onclick={handleMore}></lightning-button-icon>
+              <!--<lightning-button-icon icon-name="utility:down" alternative-text="More" title="More" onclick={handleMore}></lightning-button-icon>-->
             </lightning-button-group>
           </div>
 
@@ -51,10 +52,6 @@
       <template if:true={attachmentSummary}>
         <div class="attachment-summary">{attachmentSummary}</div>
       </template>
-
-      <div class="slds-m-top_small actions">
-        <lightning-button-icon icon-name="utility:edit" alternative-text="Edit" title="Edit" onclick={toggleEdit} class="action-icon" size="small"></lightning-button-icon>
-      </div>
 
       <!-- Inline edit mode (do not prefill existing text) -->
       <template if:true={isEditing}>
