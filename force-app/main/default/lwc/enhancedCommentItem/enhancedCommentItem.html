@@ -12,7 +12,7 @@
                   <template if:true={isDraft}><span class={statusClassName}>{statusLabel}</span></template>
                   <template if:true={isPublished}><span class={statusClassName}>{publishedLabel}</span></template>
                   <template if:true={isPrivate}>
-                    <lightning-icon icon-name="utility:lock" alternative-text="Private" title="Private" class="lock-inline" size="x-small"></lightning-icon>
+                    &nbsp;&nbsp;<lightning-icon icon-name="utility:lock" alternative-text="Private" title="Private" class="lock-inline" size="x-small"></lightning-icon>
                   </template>
                   <span class="time-inline" title={formattedDateTitle}>{formattedDate}</span>
                 </div>
@@ -53,9 +53,19 @@
       </template>
 
       <div class="slds-m-top_small actions">
-        <a href="javascript:void(0)" class="action-link" onclick={handleReply}>Reply</a>
-        <a href="javascript:void(0)" class="action-link" onclick={handleEdit}>Edit</a>
+        <lightning-button-icon icon-name="utility:edit" alternative-text="Edit" title="Edit" onclick={toggleEdit} class="action-icon" size="small"></lightning-button-icon>
       </div>
+
+      <!-- Inline edit mode (do not prefill existing text) -->
+      <template if:true={isEditing}>
+        <div class="edit-area slds-m-top_small">
+          <lightning-input-rich-text value={editHtml} onchange={handleEditChange}></lightning-input-rich-text>
+          <div class="slds-m-top_small">
+            <lightning-button variant="brand" label="Save" onclick={saveEdit}></lightning-button>
+            <lightning-button variant="neutral" label="Cancel" onclick={cancelEdit}></lightning-button>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
 </template>

@@ -2,6 +2,9 @@ import { LightningElement, api } from 'lwc';
 
 export default class EnhancedCommentItem extends LightningElement {
   @api comment;
+  isEditing = false;
+  editHtml = '';
+  
 
   get isDraft() {
     return this.comment && this.comment.Is_Draft__c === true;
@@ -60,7 +63,7 @@ export default class EnhancedCommentItem extends LightningElement {
 
   get publicIconName() {
     // Show lock icon for private comments (isPublic=false), and share for public
-    return this.isPublic ? 'utility:share' : 'utility:lock';
+    return this.isPublic ? 'utility:lock' : 'utility:share';
   }
 
   get publishedLabel() {
@@ -147,6 +150,49 @@ export default class EnhancedCommentItem extends LightningElement {
     // Parent should handle the actual publish (Apex update). We emit an event so parent can call the controller.
     this.dispatchEvent(new CustomEvent('publish', { detail: { commentId: this.comment.Id }, bubbles: true, composed: true }));
   }
+
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+    if (this.isEditing) {
+      // Per UX: do not prefill existing text when editing; start with an empty editor
+      this.editHtml = '';
+    }
+  }
+
+  handleEditChange(event) {
+    this.editHtml = event.detail && event.detail.value !== undefined ? event.detail.value : event.target.value;
+  }
+
+  saveEdit() {
+    // Read current editor value directly (covers case where onchange didn't fire)
+    let current = this.editHtml;
+    try {
+      const editor = this.template.querySelector('lightning-input-rich-text');
+      if (editor && editor.value !== undefined) current = editor.value;
+    } catch (e) {
+      // ignore
+    }
+
+    // Update the displayed comment immediately and emit a save event for persistence.
+    try {
+      if (!this.comment) this.comment = {};
+      this.comment.Body__c = current;
+      const container = this.template.querySelector(`.comment-body[data-id="${this.comment.Id}"]`);
+      if (container) container.innerHTML = current || '';
+    } catch (e) {
+      // ignore DOM update failures
+    }
+
+    this.dispatchEvent(new CustomEvent('save', { detail: { commentId: this.comment.Id, bodyHtml: current }, bubbles: true, composed: true }));
+    this.isEditing = false;
+    this.editHtml = '';
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editHtml = '';
+  }
+  
 
   handleTogglePublic() {
     const newValue = !this.isPublic;
